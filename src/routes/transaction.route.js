@@ -17,6 +17,28 @@ transactionRouter.get("/transactions", async (req, res) => {
   }
 });
 
+transactionRouter.get("/transactions/filter", async (req, res) => {
+  const { date_min, date_max } = req.query;
+  try {
+    const minDate = new Date(date_min);
+    const maxDate = new Date(date_max);
+    const filteredTransactions = await prisma.transactions.findMany({
+      orderBy: {
+        date: "desc",
+      },
+      where: {
+        AND: [{ date: { gt: minDate } }, { date: { lt: maxDate } }],
+      },
+    });
+    res.json(filteredTransactions);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "impossibile trovare le transazioni filtrati per data" });
+  }
+});
+
 transactionRouter.post("/transactions", async (req, res) => {
   const { date, location, amount } = req.body;
   try {
