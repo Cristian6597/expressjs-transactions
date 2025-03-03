@@ -13,11 +13,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Types {
+  id           Int            @id @default(autoincrement())
+  name         String         @default("")
+  description  String         @default("")
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Transactions Transactions[]
+}
+
 model Transactions {
   id        Int      @id @default(autoincrement())
   date      DateTime @default(now())
   location  String   @default("")
   amount    Decimal  @db.Decimal(10, 2)
+  typeId    Int
+  type      Types    @relation(fields: [typeId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
