@@ -23,15 +23,18 @@ transactionRouter.get("/transactions", async (req, res) => {
     }
 
     //aggiunge un if in modo che quando devo visuallizare le transazioni di dicembre, prenda le transazioni tra dicembre e gennaio dell'anno successivo
-    console.log(typeof parsedMonth);
-    if (monthNumber === 11) {
-      const nextYear = parseInt(year) + 1; // Passa all'anno successivo
-      year = nextYear; // Aggiorna l'anno
+    // if (monthNumber === 11) {
+    //   console.log(typeof monthNumber);
+    //   const nextYear = parseInt(year) + 1; // Passa all'anno successivo
+    //   year = nextYear; // Aggiorna l'anno
 
-      // Modifica il mese per prendere gennaio (01)
-      monthNumber = 0;
-    }
-    console.log(year);
+    //   // Modifica il mese per prendere gennaio (01)
+    //   monthNumber = 0;
+    // }
+    /*  console.log(
+      parsedMonth,
+      new Date(Date.UTC(parsedYear, parsedMonth + 1, 1))
+    ); */
     const transactions = await prisma.transactions.findMany({
       orderBy: {
         date: "desc",
